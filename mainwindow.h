@@ -21,7 +21,6 @@ private slots:
     void onResetClicked();
     void onLapClicked();
     void updateDisplay(int ms);
-    void recordLap(int lapNumber, int lapTime);
 
 private:
     Ui::MainWindow *ui;
