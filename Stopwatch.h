@@ -19,10 +19,10 @@ public:
 
     int elapsedTime() const; // Время с начала работы секундомера в миллисекундах
     int lastLapTime() const; // Время последнего круга
+    int lapCount() const;     // Количество кругов
 
 signals:
     void timeUpdated(int ms); // Сигнал для обновления времени
-    void lapRecorded(int lapNumber, int lapTime); // Сигнал для записи круга
 
 private slots:
     void update(); // Обновление времени
