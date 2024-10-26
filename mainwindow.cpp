@@ -1,5 +1,5 @@
-#include "MainWindow.h"
-#include "ui_MainWindow.h"
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 #include "Stopwatch.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -9,15 +9,13 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // Подключение слотов и сигналов
     connect(ui->startStopButton, &QPushButton::clicked, this, &MainWindow::onStartStopClicked);
     connect(ui->resetButton, &QPushButton::clicked, this, &MainWindow::onResetClicked);
     connect(ui->lapButton, &QPushButton::clicked, this, &MainWindow::onLapClicked);
 
     connect(m_stopwatch, &Stopwatch::timeUpdated, this, &MainWindow::updateDisplay);
-    connect(m_stopwatch, &Stopwatch::lapRecorded, this, &MainWindow::recordLap);
 
-    ui->lapButton->setEnabled(false); // Отключаем кнопку "Круг" по умолчанию
+    ui->lapButton->setEnabled(false); 
 }
 
 MainWindow::~MainWindow()
@@ -48,7 +46,10 @@ void MainWindow::onResetClicked()
 
 void MainWindow::onLapClicked()
 {
-    m_stopwatch->lap();
+    int lapTime = m_stopwatch->lastLapTime(); 
+    int lapNumber = m_stopwatch->lapCount() + 1; 
+    ui->lapBrowser->append(QString("Круг %1, время: %2 сек").arg(lapNumber).arg(lapTime / 1000.0, 0, 'f', 1));
+    m_stopwatch->lap(); 
 }
 
 void MainWindow::updateDisplay(int ms)
@@ -60,9 +61,4 @@ void MainWindow::updateDisplay(int ms)
                            .arg(minutes, 2, 10, QLatin1Char('0'))
                            .arg(seconds, 2, 10, QLatin1Char('0'))
                            .arg(tenths));
-}
-
-void MainWindow::recordLap(int lapNumber, int lapTime)
-{
-    ui->lapBrowser->append(QString("Круг %1, время: %2 сек").arg(lapNumber).arg(lapTime / 1000.0, 0, 'f', 1));
 }
