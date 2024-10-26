@@ -5,7 +5,7 @@ Stopwatch::Stopwatch(QObject *parent) : QObject(parent),
     m_lapCount(0), m_running(false)
 {
     connect(m_timer, &QTimer::timeout, this, &Stopwatch::update);
-    m_timer->setInterval(100); // Обновление каждую 0.1 сек
+    m_timer->setInterval(100); 
 }
 
 void Stopwatch::start()
@@ -26,23 +26,23 @@ void Stopwatch::stop()
 
 void Stopwatch::reset()
 {
-    stop();
     m_elapsedTime = 0;
     m_lastLapTime = 0;
     m_lapCount = 0;
     emit timeUpdated(m_elapsedTime);
 }
+
 bool Stopwatch::isRunning() const
 {
     return m_running;
 }
+
 void Stopwatch::lap()
 {
     if (m_running) {
         int currentLapTime = m_elapsedTime - m_lastLapTime;
         m_lastLapTime = m_elapsedTime;
         m_lapCount++;
-        emit lapRecorded(m_lapCount, currentLapTime);
     }
 }
 
@@ -56,8 +56,13 @@ int Stopwatch::lastLapTime() const
     return m_elapsedTime - m_lastLapTime;
 }
 
+int Stopwatch::lapCount() const
+{
+    return m_lapCount;
+}
+
 void Stopwatch::update()
 {
-    m_elapsedTime += 100; // Увеличиваем время на 0.1 сек
+    m_elapsedTime += 100; 
     emit timeUpdated(m_elapsedTime);
 }
